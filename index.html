@@ -216,6 +216,18 @@
   }
   .social-pill:hover { border-color: var(--blue); }
 
+  .karaoke-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 24px; }
+  @media (max-width: 760px) { .karaoke-grid { grid-template-columns: 1fr; } }
+  .karaoke-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .karaoke-card .kc-media { position: relative; aspect-ratio: 16 / 9; background: var(--surface-2); cursor: pointer; }
+  .karaoke-card .kc-media img, .karaoke-card .kc-media iframe { width: 100%; height: 100%; display: block; border: 0; object-fit: cover; }
+  .karaoke-card .kc-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #fff; background: rgba(0,0,0,0.25); transition: background 0.2s; }
+  .karaoke-card .kc-media:hover .kc-play { background: rgba(0,0,0,0.4); }
+  .karaoke-card .kc-info { padding: 12px 14px; }
+  .karaoke-card .kc-info strong { display: block; font-size: 14px; }
+  .karaoke-card .kc-info span { color: var(--muted); font-size: 12.5px; }
+  .karaoke-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 10px 0 24px; }
+
   footer {
     border-top: 1px solid var(--border);
     padding-block: 28px;
@@ -304,6 +316,7 @@
       <span class="tag">Comunidad</span>
       <h2>Pide tu canción, sigue el progreso</h2>
     </div>
+    <div class="karaoke-grid" id="karaoke-grid"></div>
     <div class="social-row">
       <a class="social-pill" href="https://allmylinks.com/vocaldropstudio" target="_blank" rel="noopener">🔗 Todos los enlaces</a>
     </div>
@@ -316,6 +329,57 @@
 </footer>
 
 <script>
+  (function () {
+    var grid = document.getElementById('karaoke-grid');
+    if (!grid) return;
+    fetch('karaokes.json').then(function (r) { return r.ok ? r.json() : []; }).then(function (items) {
+      if (!items || !items.length) {
+        grid.innerHTML = '';
+        return;
+      }
+      items.forEach(function (item) {
+        var card = document.createElement('div');
+        card.className = 'karaoke-card';
+
+        var media = document.createElement('div');
+        media.className = 'kc-media';
+
+        var img = document.createElement('img');
+        img.src = item.thumb || '';
+        img.alt = (item.artista || '') + ' - ' + (item.cancion || '');
+        img.loading = 'lazy';
+
+        var play = document.createElement('div');
+        play.className = 'kc-play';
+        play.textContent = '▶';
+
+        media.appendChild(img);
+        media.appendChild(play);
+        media.addEventListener('click', function () {
+          var iframe = document.createElement('iframe');
+          iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(item.youtube_id || '') + '?autoplay=1';
+          iframe.allow = 'autoplay; encrypted-media';
+          iframe.allowFullscreen = true;
+          media.innerHTML = '';
+          media.appendChild(iframe);
+        });
+
+        var info = document.createElement('div');
+        info.className = 'kc-info';
+        var strong = document.createElement('strong');
+        strong.textContent = item.cancion || '';
+        var span = document.createElement('span');
+        span.textContent = item.artista || '';
+        info.appendChild(strong);
+        info.appendChild(span);
+
+        card.appendChild(media);
+        card.appendChild(info);
+        grid.appendChild(card);
+      });
+    }).catch(function () {});
+  })();
+
   (function () {
     var c = document.getElementById('wave');
     if (!c) return;
