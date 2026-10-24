@@ -203,6 +203,26 @@
     border-radius: 10px;
     background: rgba(53,233,160,0.06);
   }
+  .dl-bases {
+    text-align: left;
+    width: 100%;
+    max-width: 56ch;
+    position: relative;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  .dl-bases summary {
+    cursor: pointer;
+    color: var(--fg, #eaeaea);
+    font-weight: 600;
+    font-size: 14px;
+    list-style: none;
+  }
+  .dl-bases summary::-webkit-details-marker { display: none; }
+  .dl-bases summary::before { content: "▸ "; }
+  .dl-bases[open] summary::before { content: "▾ "; }
+  .dl-bases ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 8px; }
+  .dl-bases li { line-height: 1.5; }
 
   /* community */
   .social-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
@@ -320,6 +340,18 @@
       <div class="cta-row">
         <a class="btn btn-primary" href="#" id="btn-descarga-ganadores">⬇ Descargar (solo ganadores)</a>
       </div>
+      <details class="dl-bases">
+        <summary>Bases del sorteo</summary>
+        <ul>
+          <li><strong>Requisito importante:</strong> VocalDrop Studio es una app de <strong>escritorio para Windows</strong>. Necesitas un ordenador con Windows para poder usarla — todavía no hay versión para Mac, Linux ni una app de móvil independiente (el móvil se usa a través del PC encendido). Si no tienes PC con Windows, no vas a poder usar el premio.</li>
+          <li><strong>Premio:</strong> 5 plazas de acceso anticipado a la beta, 7 días antes del lanzamiento público (2 de noviembre de 2026).</li>
+          <li><strong>Cómo participar:</strong> seguir @vocaldropstudio, comentar en la publicación del sorteo y etiquetar a 1 amigo.</li>
+          <li><strong>Plazo:</strong> comentarios válidos hasta el 26 de octubre de 2026, fecha del sorteo.</li>
+          <li><strong>Cómo se eligen los ganadores:</strong> sorteo aleatorio entre los comentarios que cumplen las condiciones. El resultado se anuncia ese mismo día en una historia.</li>
+          <li><strong>Contacto:</strong> a los ganadores se les avisa por mensaje directo con su cuenta de acceso.</li>
+          <li>Promoción no patrocinada, administrada ni asociada a Meta ni a TikTok.</li>
+        </ul>
+      </details>
     </div>
   </section>
 
